@@ -8,9 +8,36 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700", "800"],
 });
 
+const siteUrl = "https://valentine-link-app.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Valentine Link",
-  description: "Create and share personalized Valentine's Day messages",
+  title: "Create a Valentine Link They Can't Refuse",
+  description:
+    "Send a playful Valentine link with a YES button that grows bigger each time they click NO. Free and fun!",
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: "Create a Valentine Link They Can't Refuse 💝",
+    description:
+      "Send a playful Valentine link with a YES button that grows bigger each time they click NO. Free and fun!",
+    url: siteUrl,
+    siteName: "Valentine Link",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Valentine Link - Create a link they can't refuse",
+      },
+    ],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Create a Valentine Link They Can't Refuse 💝",
+    description:
+      "Send a playful Valentine link with a YES button that grows bigger each time they click NO. Free and fun!",
+    images: ["/og-image.png"],
+  },
 };
 
 export default function RootLayout({
