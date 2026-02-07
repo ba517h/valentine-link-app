@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@fontsource/plus-jakarta-sans": "^5.2.8",
     "@neondatabase/serverless": "^1.0.2",
     "@types/canvas-confetti": "^1.9.0",
     "canvas-confetti": "^1.9.4",

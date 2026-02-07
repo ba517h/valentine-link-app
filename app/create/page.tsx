@@ -19,30 +19,27 @@ const themes = [
     id: "classic",
     name: "Classic",
     icon: Heart,
-    gradient: "from-rose-500 to-red-500",
-    border: "border-rose-400",
-    bg: "bg-rose-50",
-    ring: "ring-rose-500",
+    color: "bg-[#FF1744]",
+    selectedBorder: "border-[#FF1744]",
+    selectedBg: "bg-red-50",
     description: "Timeless red & white",
   },
   {
     id: "cute",
     name: "Cute",
     icon: Sparkles,
-    gradient: "from-pink-400 to-fuchsia-500",
-    border: "border-pink-400",
-    bg: "bg-pink-50",
-    ring: "ring-pink-500",
+    color: "bg-[#FF6B9D]",
+    selectedBorder: "border-[#FF6B9D]",
+    selectedBg: "bg-pink-50",
     description: "Playful pink vibes",
   },
   {
     id: "elegant",
     name: "Elegant",
     icon: Crown,
-    gradient: "from-rose-700 to-rose-900",
-    border: "border-rose-800",
-    bg: "bg-rose-50",
-    ring: "ring-rose-800",
+    color: "bg-[#4A0E4E]",
+    selectedBorder: "border-[#4A0E4E]",
+    selectedBg: "bg-purple-50",
     description: "Sophisticated & bold",
   },
 ];
@@ -135,28 +132,26 @@ export default function CreatePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-rose-50 via-pink-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-[#FFE5EC] via-[#FFF0F3] to-[#FFC9DE]">
       {/* Back navigation */}
       <div className="max-w-2xl mx-auto px-6 pt-8">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-rose-600 transition-colors"
+          className="inline-flex items-center gap-2 text-sm font-bold text-gray-600 hover:text-gray-900 transition-colors bg-white border-2 border-black rounded-full px-4 py-1.5 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-none hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-150"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to home
+          Back
         </Link>
       </div>
 
       {/* Header */}
       <div className="text-center pt-12 pb-10 px-6">
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-rose-500 to-pink-500 mb-6 shadow-lg shadow-rose-500/20">
-          <Heart className="w-7 h-7 text-white fill-white" />
+        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-[#FF1744] border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] mb-6">
+          <Heart className="w-8 h-8 text-white fill-white" />
         </div>
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
           Create Your{" "}
-          <span className="bg-gradient-to-r from-rose-500 via-pink-500 to-red-500 bg-clip-text text-transparent">
-            Valentine Link
-          </span>
+          <span className="text-[#FF1744]">Valentine Link</span>
         </h1>
         <p className="text-gray-500 text-lg max-w-md mx-auto">
           Fill in the details below and share the love
@@ -167,12 +162,12 @@ export default function CreatePage() {
       <div className="max-w-2xl mx-auto px-6 pb-24">
         {successUrl ? (
           /* ---- Success state ---- */
-          <div className="bg-white rounded-3xl shadow-xl shadow-rose-100/50 border border-rose-100 p-8 sm:p-10 text-center animate-fade-in">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 mb-6">
-              <Check className="w-8 h-8 text-green-600" />
+          <div className="bg-white rounded-3xl border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 sm:p-10 text-center animate-fade-in">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-green-400 border-[3px] border-black shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] mb-6">
+              <Check className="w-8 h-8 text-white" />
             </div>
 
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            <h2 className="text-2xl font-extrabold text-gray-900 mb-2">
               Your link is ready! 🎉
             </h2>
             <p className="text-gray-500 mb-8">
@@ -180,9 +175,9 @@ export default function CreatePage() {
             </p>
 
             {/* URL display */}
-            <div className="bg-gray-50 rounded-xl border border-gray-200 p-4 mb-6">
-              <p className="text-sm text-gray-500 mb-1">Your link</p>
-              <p className="text-rose-600 font-semibold text-lg break-all">
+            <div className="bg-gray-50 rounded-2xl border-2 border-black p-4 mb-6">
+              <p className="text-sm text-gray-500 mb-1 font-medium">Your link</p>
+              <p className="text-[#FF1744] font-bold text-lg break-all">
                 {successUrl}
               </p>
             </div>
@@ -190,7 +185,7 @@ export default function CreatePage() {
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleCopy}
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg shadow-rose-500/25 transition-all duration-200"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-[#FF1744] text-white font-bold py-3 px-6 rounded-full border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-150"
               >
                 {copied ? (
                   <>
@@ -209,7 +204,7 @@ export default function CreatePage() {
                 href={successUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 inline-flex items-center justify-center gap-2 bg-white text-rose-600 font-semibold py-3 px-6 rounded-xl border border-rose-200 hover:bg-rose-50 transition-all duration-200"
+                className="flex-1 inline-flex items-center justify-center gap-2 bg-white text-gray-900 font-bold py-3 px-6 rounded-full border-[3px] border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] transition-all duration-150"
               >
                 <Eye className="w-5 h-5" />
                 Preview
@@ -218,7 +213,7 @@ export default function CreatePage() {
 
             <button
               onClick={handleReset}
-              className="w-full mt-3 inline-flex items-center justify-center gap-2 text-gray-500 hover:text-gray-700 font-medium py-2 text-sm transition-colors"
+              className="w-full mt-4 inline-flex items-center justify-center gap-2 text-gray-500 hover:text-gray-700 font-bold py-2 text-sm transition-colors"
             >
               <RefreshCw className="w-4 h-4" />
               Create Another
@@ -228,12 +223,12 @@ export default function CreatePage() {
           /* ---- Form state ---- */
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-3xl shadow-xl shadow-rose-100/50 border border-rose-100 p-8 sm:p-10"
+            className="bg-white rounded-3xl border-[3px] border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] p-8 sm:p-10"
           >
             <div className="space-y-8">
               {/* Error message */}
               {error && (
-                <div className="bg-red-50 text-red-700 text-sm font-medium px-4 py-3 rounded-xl border border-red-100 animate-fade-in">
+                <div className="bg-red-50 text-red-700 text-sm font-bold px-4 py-3 rounded-xl border-2 border-red-300 animate-fade-in">
                   {error}
                 </div>
               )}
@@ -242,12 +237,12 @@ export default function CreatePage() {
               <div>
                 <label
                   htmlFor="slug"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
+                  className="block text-sm font-bold text-gray-900 mb-2"
                 >
                   Custom URL
                 </label>
-                <div className="flex rounded-xl border border-gray-200 focus-within:border-rose-400 focus-within:ring-2 focus-within:ring-rose-400/20 transition-all duration-200 overflow-hidden">
-                  <span className="inline-flex items-center px-4 bg-gray-50 text-gray-500 text-sm border-r border-gray-200">
+                <div className="flex rounded-xl border-2 border-black focus-within:border-[#FF1744] focus-within:shadow-[0_0_0_3px_rgba(255,23,68,0.15)] transition-all duration-200 overflow-hidden">
+                  <span className="inline-flex items-center px-4 bg-gray-100 text-gray-500 text-sm font-medium border-r-2 border-black">
                     valentine.app/
                   </span>
                   <input
@@ -257,11 +252,11 @@ export default function CreatePage() {
                     value={slug}
                     onChange={(e) => handleSlugChange(e.target.value)}
                     disabled={isLoading}
-                    className="flex-1 px-4 py-3 text-gray-900 placeholder-gray-400 focus:outline-none text-sm disabled:opacity-50"
+                    className="flex-1 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium disabled:opacity-50"
                   />
                 </div>
                 {slug && (
-                  <p className="mt-2 text-sm text-rose-600 font-medium">
+                  <p className="mt-2 text-sm text-[#FF1744] font-bold">
                     Preview: valentine.app/{slug}
                   </p>
                 )}
@@ -271,7 +266,7 @@ export default function CreatePage() {
               <div>
                 <label
                   htmlFor="name"
-                  className="block text-sm font-semibold text-gray-700 mb-2"
+                  className="block text-sm font-bold text-gray-900 mb-2"
                 >
                   Recipient&apos;s Name
                 </label>
@@ -282,13 +277,13 @@ export default function CreatePage() {
                   value={recipientName}
                   onChange={(e) => handleNameChange(e.target.value)}
                   disabled={isLoading}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-rose-400 focus:ring-2 focus:ring-rose-400/20 transition-all duration-200 text-gray-900 placeholder-gray-400 focus:outline-none text-sm disabled:opacity-50"
+                  className="w-full px-4 py-3.5 rounded-xl border-2 border-black focus:border-[#FF1744] focus:shadow-[0_0_0_3px_rgba(255,23,68,0.15)] transition-all duration-200 text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium disabled:opacity-50"
                 />
                 <div className="flex justify-between mt-2">
                   {recipientName ? (
                     <p className="text-sm text-gray-500">
                       They&apos;ll see:{" "}
-                      <span className="text-rose-600 font-medium">
+                      <span className="text-[#FF1744] font-bold">
                         &quot;Hey {recipientName}, will you be my
                         Valentine?&quot;
                       </span>
@@ -296,7 +291,7 @@ export default function CreatePage() {
                   ) : (
                     <span />
                   )}
-                  <p className="text-xs text-gray-400 shrink-0 ml-2">
+                  <p className="text-xs text-gray-400 shrink-0 ml-2 font-medium">
                     {recipientName.length}/100
                   </p>
                 </div>
@@ -304,7 +299,7 @@ export default function CreatePage() {
 
               {/* Theme selector */}
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                <label className="block text-sm font-bold text-gray-900 mb-3">
                   Choose a Theme
                 </label>
                 <div className="grid grid-cols-3 gap-3">
@@ -317,20 +312,20 @@ export default function CreatePage() {
                         onClick={() => setSelectedTheme(theme.id)}
                         disabled={isLoading}
                         className={`
-                          relative flex flex-col items-center gap-2 p-4 sm:p-5 rounded-2xl border-2 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
+                          relative flex flex-col items-center gap-2 p-4 sm:p-5 rounded-2xl border-[3px] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
                           ${
                             isSelected
-                              ? `${theme.border} ${theme.bg} ring-2 ${theme.ring} ring-offset-2`
-                              : "border-gray-200 hover:border-gray-300 bg-white"
+                              ? `${theme.selectedBorder} ${theme.selectedBg} shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`
+                              : "border-gray-200 hover:border-black bg-white"
                           }
                         `}
                       >
                         <div
-                          className={`w-10 h-10 rounded-xl bg-gradient-to-br ${theme.gradient} flex items-center justify-center shadow-sm`}
+                          className={`w-11 h-11 rounded-xl ${theme.color} flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
                         >
                           <theme.icon className="w-5 h-5 text-white" />
                         </div>
-                        <span className="font-semibold text-sm text-gray-900">
+                        <span className="font-bold text-sm text-gray-900">
                           {theme.name}
                         </span>
                         <span className="text-xs text-gray-500 hidden sm:block">
@@ -346,7 +341,7 @@ export default function CreatePage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-semibold py-4 rounded-xl shadow-lg shadow-rose-500/25 hover:shadow-xl hover:shadow-rose-500/30 transition-all duration-300 hover:-translate-y-0.5 flex items-center justify-center gap-2 text-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                className="w-full bg-[#FF1744] text-white font-bold py-4 rounded-full border-[3px] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-150 flex items-center justify-center gap-2 text-lg disabled:opacity-70 disabled:cursor-not-allowed active:shadow-none active:translate-x-[5px] active:translate-y-[5px]"
               >
                 {isLoading ? (
                   <>
