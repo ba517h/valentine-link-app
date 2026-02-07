@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import {
   Heart,
@@ -44,18 +44,62 @@ const themes = [
   },
 ];
 
+const SLUG_REGEX = /^[a-z0-9][a-z0-9-]{1,48}[a-z0-9]$/;
+
+type SlugStatus = "idle" | "checking" | "available" | "taken" | "invalid";
+
 export default function CreatePage() {
   const [slug, setSlug] = useState("");
+  const [slugStatus, setSlugStatus] = useState<SlugStatus>("idle");
   const [recipientName, setRecipientName] = useState("");
   const [selectedTheme, setSelectedTheme] = useState("classic");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [successUrl, setSuccessUrl] = useState("");
   const [copied, setCopied] = useState(false);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const checkSlug = useCallback(async (value: string) => {
+    if (!SLUG_REGEX.test(value)) {
+      setSlugStatus("invalid");
+      return;
+    }
+
+    setSlugStatus("checking");
+
+    try {
+      const res = await fetch(`/api/check-slug?slug=${encodeURIComponent(value)}`);
+      const data = await res.json();
+      setSlugStatus(data.available ? "available" : "taken");
+    } catch {
+      setSlugStatus("idle");
+    }
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) clearTimeout(debounceTimer.current);
+    };
+  }, []);
 
   const handleSlugChange = (value: string) => {
-    setSlug(value.toLowerCase().replace(/[^a-z0-9-]/g, ""));
+    const cleaned = value.toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 50);
+    setSlug(cleaned);
     setError("");
+
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
+
+    if (!cleaned) {
+      setSlugStatus("idle");
+      return;
+    }
+
+    if (cleaned.length < 3) {
+      setSlugStatus("invalid");
+      return;
+    }
+
+    debounceTimer.current = setTimeout(() => checkSlug(cleaned), 500);
   };
 
   const handleNameChange = (value: string) => {
@@ -241,7 +285,15 @@ export default function CreatePage() {
                 >
                   Custom URL
                 </label>
-                <div className="flex rounded-xl border-2 border-black focus-within:border-[#FF1744] focus-within:shadow-[0_0_0_3px_rgba(255,23,68,0.15)] transition-all duration-200 overflow-hidden">
+                <div
+                  className={`flex rounded-xl border-2 transition-all duration-200 overflow-hidden ${
+                    slugStatus === "available"
+                      ? "border-green-500"
+                      : slugStatus === "taken" || slugStatus === "invalid"
+                      ? "border-red-500"
+                      : "border-black focus-within:border-[#FF1744] focus-within:shadow-[0_0_0_3px_rgba(255,23,68,0.15)]"
+                  }`}
+                >
                   <span className="inline-flex items-center px-4 bg-gray-100 text-gray-500 text-sm font-medium border-r-2 border-black">
                     valentine.app/
                   </span>
@@ -254,12 +306,32 @@ export default function CreatePage() {
                     disabled={isLoading}
                     className="flex-1 px-4 py-3.5 text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium disabled:opacity-50"
                   />
+                  {slugStatus === "checking" && (
+                    <span className="inline-flex items-center pr-4">
+                      <Loader2 className="w-4 h-4 text-gray-400 animate-spin" />
+                    </span>
+                  )}
                 </div>
-                {slug && (
-                  <p className="mt-2 text-sm text-[#FF1744] font-bold">
-                    Preview: valentine.app/{slug}
-                  </p>
-                )}
+                <div className="h-6 mt-2 flex items-center">
+                  {slugStatus === "checking" && (
+                    <span className="text-gray-400 text-sm font-medium">Checking...</span>
+                  )}
+                  {slugStatus === "available" && (
+                    <span className="text-green-600 font-bold text-sm">✓ Available!</span>
+                  )}
+                  {slugStatus === "taken" && (
+                    <span className="text-red-600 font-bold text-sm">✗ This URL is already taken. Try another!</span>
+                  )}
+                  {slugStatus === "invalid" && slug.length > 0 && (
+                    <span className="text-red-600 font-bold text-sm">
+                      {slug.length < 3
+                        ? "Must be at least 3 characters"
+                        : slug.startsWith("-") || slug.endsWith("-")
+                        ? "Cannot start or end with a hyphen"
+                        : "Invalid format (use lowercase, numbers, hyphens)"}
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* Recipient name input */}
@@ -302,7 +374,7 @@ export default function CreatePage() {
                 <label className="block text-sm font-bold text-gray-900 mb-3">
                   Choose a Theme
                 </label>
-                <div className="grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                   {themes.map((theme) => {
                     const isSelected = selectedTheme === theme.id;
                     return (
@@ -312,7 +384,7 @@ export default function CreatePage() {
                         onClick={() => setSelectedTheme(theme.id)}
                         disabled={isLoading}
                         className={`
-                          relative flex flex-col items-center gap-2 p-4 sm:p-5 rounded-2xl border-[3px] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
+                          relative flex flex-row items-center gap-3 p-3 md:flex-col md:items-center md:gap-2 md:p-5 rounded-2xl border-[3px] transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
                           ${
                             isSelected
                               ? `${theme.selectedBorder} ${theme.selectedBg} shadow-[3px_3px_0px_0px_rgba(0,0,0,1)]`
@@ -321,16 +393,18 @@ export default function CreatePage() {
                         `}
                       >
                         <div
-                          className={`w-11 h-11 rounded-xl ${theme.color} flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
+                          className={`w-9 h-9 md:w-11 md:h-11 shrink-0 rounded-xl ${theme.color} flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]`}
                         >
-                          <theme.icon className="w-5 h-5 text-white" />
+                          <theme.icon className="w-4 h-4 md:w-5 md:h-5 text-white" />
                         </div>
-                        <span className="font-bold text-sm text-gray-900">
-                          {theme.name}
-                        </span>
-                        <span className="text-xs text-gray-500 hidden sm:block">
-                          {theme.description}
-                        </span>
+                        <div className="flex flex-col items-start md:items-center">
+                          <span className="font-bold text-sm text-gray-900">
+                            {theme.name}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {theme.description}
+                          </span>
+                        </div>
                       </button>
                     );
                   })}
@@ -340,8 +414,8 @@ export default function CreatePage() {
               {/* Submit */}
               <button
                 type="submit"
-                disabled={isLoading}
-                className="w-full bg-[#FF1744] text-white font-bold py-4 rounded-full border-[3px] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-150 flex items-center justify-center gap-2 text-lg disabled:opacity-70 disabled:cursor-not-allowed active:shadow-none active:translate-x-[5px] active:translate-y-[5px]"
+                disabled={isLoading || slugStatus !== "available" || !recipientName.trim()}
+                className="w-full bg-[#FF1744] text-white font-bold py-4 rounded-full border-[3px] border-black shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[3px] hover:translate-y-[3px] transition-all duration-150 flex items-center justify-center gap-2 text-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-[5px_5px_0px_0px_rgba(0,0,0,1)] disabled:hover:translate-x-0 disabled:hover:translate-y-0 active:shadow-none active:translate-x-[5px] active:translate-y-[5px]"
               >
                 {isLoading ? (
                   <>
