@@ -172,43 +172,41 @@ export default function ValentineClient({
       <div className={`absolute top-1/4 left-1/4 w-80 h-80 ${t.orb1} rounded-full blur-3xl`} />
       <div className={`absolute bottom-1/4 right-1/4 w-80 h-80 ${t.orb2} rounded-full blur-3xl`} />
 
-      <div className="relative z-10 flex flex-col items-center text-center px-6 max-w-lg mx-auto">
+      <div className="relative z-10 flex flex-col items-center text-center px-4 sm:px-6 max-w-lg mx-auto w-full">
         {!accepted ? (
           <>
             {/* Heart icon */}
-            <div className="mb-8 animate-pulse-slow">
-              <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                <Heart className={`w-10 h-10 ${t.heartColor}`} />
+            <div className="mb-6 sm:mb-8 animate-pulse-slow">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Heart className={`w-8 h-8 sm:w-10 sm:h-10 ${t.heartColor}`} />
               </div>
             </div>
 
             {/* Question */}
             <h1
-              className={`text-4xl sm:text-5xl md:text-6xl font-bold ${textColor} mb-4 leading-tight`}
+              className={`text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold ${textColor} mb-3 sm:mb-4 leading-snug sm:leading-tight`}
             >
-              Will you be my
-              <br />
-              Valentine, {recipientName}? 💕
+              Will you be my Valentine, {recipientName}? 💕
             </h1>
 
             {/* Playful message on No clicks */}
-            <div className="h-10 mb-8 flex items-center">
+            <div className="h-8 sm:h-10 mb-6 sm:mb-8 flex items-center">
               {noCount > 0 && (
-                <p className={`${subTextColor} text-lg sm:text-xl animate-fade-in`}>
+                <p className={`${subTextColor} text-base sm:text-lg md:text-xl animate-fade-in`}>
                   {noMessages[Math.min(noCount - 1, noMessages.length - 1)]}
                 </p>
               )}
             </div>
 
             {/* Buttons */}
-            <div className="relative z-0 flex flex-wrap items-center justify-center gap-4">
+            <div className="relative z-0 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
               <button
                 onClick={handleYes}
                 style={{
                   transform: `scale(${yesScale})`,
                   transition: "transform 0.3s ease",
                 }}
-                className={`relative z-0 bg-white ${t.yesText} font-bold px-8 py-4 rounded-full shadow-lg shadow-black/10 hover:shadow-xl ${t.yesHover} active:scale-95 text-lg origin-center`}
+                className={`relative z-0 bg-white ${t.yesText} font-bold px-6 py-3 sm:px-8 sm:py-4 rounded-full shadow-lg shadow-black/10 hover:shadow-xl ${t.yesHover} active:scale-95 text-base sm:text-lg origin-center`}
               >
                 YES! 💕
               </button>
@@ -220,7 +218,7 @@ export default function ValentineClient({
                   transition: "transform 0.3s ease, opacity 0.3s ease",
                   opacity: Math.max(0.4, 1 - noCount * 0.12),
                 }}
-                className={`relative z-0 ${t.noBg} backdrop-blur-sm ${isCuteTheme ? "text-pink-700" : "text-white"} font-semibold px-6 py-3 rounded-full border ${t.noBorder} ${t.noHover} active:scale-95 text-base origin-center`}
+                className={`relative z-0 ${t.noBg} backdrop-blur-sm ${isCuteTheme ? "text-pink-700" : "text-white"} font-semibold px-5 py-2.5 sm:px-6 sm:py-3 rounded-full border ${t.noBorder} ${t.noHover} active:scale-95 text-sm sm:text-base origin-center`}
               >
                 No
               </button>
@@ -229,32 +227,29 @@ export default function ValentineClient({
         ) : (
           /* Celebration state */
           <div className="flex flex-col items-center animate-fade-in">
-            <div className="text-7xl sm:text-8xl mb-6">🎉</div>
+            <div className="text-6xl sm:text-7xl md:text-8xl mb-4 sm:mb-6">🎉</div>
 
             <h1
-              className={`text-4xl sm:text-5xl md:text-6xl font-bold ${textColor} mb-4`}
+              className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold ${textColor} mb-3 sm:mb-4`}
             >
               Yay! 🎉
             </h1>
-            <p className={`text-xl sm:text-2xl ${subTextColor} mb-10`}>
-              They said{" "}
+            <p className={`text-lg sm:text-xl md:text-2xl ${subTextColor} mb-8 sm:mb-10`}>
+              You said{" "}
               <span className={`font-bold ${textColor}`}>YES!</span>
             </p>
 
             {/* Celebration GIF */}
-            <div className="w-64 h-64 sm:w-80 sm:h-80 rounded-3xl overflow-hidden shadow-2xl shadow-black/20 mb-8 bg-white/10 backdrop-blur-sm border border-white/20">
-              <iframe
-                src="https://giphy.com/embed/MeIucAjPKoA120R7sN"
-                width="100%"
-                height="100%"
-                style={{ pointerEvents: "none" }}
-                frameBorder="0"
+            <div className="w-52 h-52 sm:w-64 sm:h-64 md:w-80 md:h-80 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/20 mb-6 sm:mb-8 bg-white/10 backdrop-blur-sm border border-white/20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGEwZmZ4c3l6ZHN6dWwxaDA4aGd3N3VuampqM2JpYTdyN2NvbXJ4cCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/26ufdipQqU2lhNA4g/giphy.gif"
+                alt="Celebration"
                 className="w-full h-full object-cover"
-                allowFullScreen
               />
             </div>
 
-            <p className={`${mutedTextColor} text-sm`}>
+            <p className={`${mutedTextColor} text-xs sm:text-sm`}>
               Happy Valentine&apos;s Day! 💝
             </p>
           </div>
